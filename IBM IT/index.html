@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>IT Helpdesk Assistant</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="bg-gray-100 min-h-screen flex flex-col">
+
+  <!-- ===== TOP NAVBAR ===== -->
+  <header class="bg-white border-b border-gray-200 px-4 py-3 flex items-center gap-3 shadow-sm z-10">
+    <div class="w-9 h-9 rounded-full bg-blue-600 flex items-center justify-center flex-shrink-0">
+      <!-- Robot / AI icon -->
+      <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+          d="M9 3H5a2 2 0 00-2 2v4m6-6h10a2 2 0 012 2v4M9 3v18m0 0h10a2 2 0 002-2V9M9 21H5a2 2 0 01-2-2V9m0 0h18"/>
+      </svg>
+    </div>
+    <div>
+      <h1 class="text-base font-semibold text-gray-800 leading-tight">IT Helpdesk Assistant</h1>
+      <p class="text-xs text-green-500 font-medium flex items-center gap-1">
+        <span class="w-1.5 h-1.5 bg-green-500 rounded-full inline-block"></span>
+        Online &mdash; Siap membantu
+      </p>
+    </div>
+    <!-- Mobile sidebar toggle -->
+    <button id="btn-toggle-sidebar"
+      class="ml-auto lg:hidden p-2 rounded-lg text-gray-500 hover:bg-gray-100 transition"
+      aria-label="Toggle sidebar">
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7"/>
+      </svg>
+    </button>
+  </header>
+
+  <!-- ===== MAIN LAYOUT ===== -->
+  <main class="flex flex-1 overflow-hidden max-w-7xl w-full mx-auto">
+
+    <!-- ===== CHAT AREA ===== -->
+    <section class="flex flex-col flex-1 overflow-hidden">
+
+      <!-- Message list -->
+      <div id="chat-messages"
+        class="flex-1 overflow-y-auto px-4 py-5 space-y-4 scroll-smooth">
+        <!-- Pesan awal dari AI ditambahkan oleh script.js -->
+      </div>
+
+      <!-- Typing indicator (hidden by default) -->
+      <div id="typing-indicator" class="hidden px-4 pb-2">
+        <div class="flex items-center gap-2">
+          <div class="w-7 h-7 rounded-full bg-blue-100 flex items-center justify-center flex-shrink-0">
+            <svg class="w-4 h-4 text-blue-600" fill="currentColor" viewBox="0 0 24 24">
+              <circle cx="12" cy="12" r="10"/>
+            </svg>
+          </div>
+          <div class="typing-bubble bg-white border border-gray-200 rounded-2xl rounded-bl-sm px-4 py-2.5">
+            <span class="typing-dot"></span>
+            <span class="typing-dot"></span>
+            <span class="typing-dot"></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Input area -->
+      <div class="border-t border-gray-200 bg-white px-4 py-3">
+        <form id="chat-form" class="flex items-end gap-2">
+          <textarea
+            id="user-input"
+            rows="1"
+            placeholder="Ketik masalah Anda di sini…"
+            class="flex-1 resize-none rounded-xl border border-gray-300 bg-gray-50 px-4 py-2.5 text-sm text-gray-800
+                   placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent
+                   transition max-h-32 leading-relaxed"
+            autocomplete="off"
+          ></textarea>
+          <button
+            type="submit"
+            id="btn-send"
+            class="flex-shrink-0 w-10 h-10 rounded-xl bg-blue-600 hover:bg-blue-700 active:scale-95
+                   flex items-center justify-center transition-all shadow"
+            aria-label="Kirim pesan">
+            <!-- Paper plane icon -->
+            <svg class="w-4 h-4 text-white translate-x-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/>
+            </svg>
+          </button>
+        </form>
+        <p class="text-xs text-gray-400 mt-1.5 text-center">
+          Tekan <kbd class="kbd">Enter</kbd> untuk mengirim &middot; <kbd class="kbd">Shift+Enter</kbd> untuk baris baru
+        </p>
+      </div>
+    </section>
+
+    <!-- ===== SIDEBAR ===== -->
+    <aside id="sidebar"
+      class="sidebar w-72 flex-shrink-0 bg-white border-l border-gray-200 flex flex-col overflow-y-auto">
+
+      <!-- Quick Actions -->
+      <div class="p-4 border-b border-gray-100">
+        <h2 class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">Quick Actions</h2>
+        <div class="space-y-2" id="quick-actions">
+          <!-- Buttons injected by script.js -->
+        </div>
+      </div>
+
+      <!-- Escalate -->
+      <div class="p-4">
+        <h2 class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">Butuh Bantuan Lebih?</h2>
+        <button id="btn-escalate"
+          class="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl
+                 bg-red-50 border border-red-200 text-red-600 text-sm font-medium
+                 hover:bg-red-100 active:scale-95 transition-all">
+          <!-- Phone icon -->
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13
+                 a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19
+                 a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
+          </svg>
+          Eskalasi ke IT Support
+        </button>
+        <p class="text-xs text-gray-400 mt-2 text-center leading-relaxed">
+          Jika masalah belum terselesaikan,<br/>tim IT kami siap membantu Anda.
+        </p>
+      </div>
+
+      <!-- Session info -->
+      <div class="mt-auto p-4 border-t border-gray-100">
+        <p class="text-xs text-gray-400 text-center">
+          Sesi dimulai: <span id="session-time" class="font-medium text-gray-500"></span>
+        </p>
+      </div>
+    </aside>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>

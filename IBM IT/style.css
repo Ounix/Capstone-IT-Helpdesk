@@ -1,0 +1,382 @@
+/* ============================================================
+   IT Helpdesk Assistant — Global Styles
+   Tailwind handles utilities; this file covers custom components
+   and animations that Tailwind cannot express inline.
+   ============================================================ */
+
+/* ----- Base reset / font ----- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+  font-family: -apple-system, "Segoe UI", system-ui, sans-serif;
+  color: #1f2328;
+}
+
+/* ----- Scrollbar styling (webkit) ----- */
+#chat-messages::-webkit-scrollbar {
+  width: 5px;
+}
+#chat-messages::-webkit-scrollbar-track {
+  background: transparent;
+}
+#chat-messages::-webkit-scrollbar-thumb {
+  background-color: #d1d5db;
+  border-radius: 999px;
+}
+#chat-messages::-webkit-scrollbar-thumb:hover {
+  background-color: #9ca3af;
+}
+
+/* ----- Sidebar (desktop always visible, mobile overlay) ----- */
+.sidebar {
+  transition: transform 0.25s ease;
+}
+
+@media (max-width: 1023px) {
+  /* On mobile the sidebar is absolutely positioned and slides in/out */
+  .sidebar {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 50;
+    transform: translateX(100%);
+    box-shadow: -4px 0 24px rgba(0, 0, 0, 0.08);
+  }
+  .sidebar.open {
+    transform: translateX(0);
+  }
+}
+
+/* Overlay backdrop for mobile sidebar */
+#sidebar-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.25);
+  z-index: 40;
+}
+#sidebar-overlay.visible {
+  display: block;
+}
+
+/* ----- Chat bubbles ----- */
+
+/* User bubble */
+.bubble-user {
+  background-color: #2563eb;   /* blue-600 */
+  color: #ffffff;
+  border-radius: 18px 18px 4px 18px;
+  padding: 10px 14px;
+  max-width: 75%;
+  font-size: 0.875rem;
+  line-height: 1.55;
+  word-break: break-word;
+  box-shadow: 0 1px 3px rgba(37, 99, 235, 0.25);
+}
+
+/* AI bubble */
+.bubble-ai {
+  background-color: #ffffff;
+  color: #1f2328;
+  border: 1px solid #e5e7eb;
+  border-radius: 18px 18px 18px 4px;
+  padding: 10px 14px;
+  max-width: 82%;
+  font-size: 0.875rem;
+  line-height: 1.6;
+  word-break: break-word;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+}
+
+/* Numbered step list inside AI bubbles */
+.bubble-ai ol {
+  list-style: decimal;
+  padding-left: 1.25rem;
+  margin-top: 0.5rem;
+  space-y: 0.25rem;
+}
+.bubble-ai ol li {
+  margin-bottom: 0.35rem;
+}
+.bubble-ai strong {
+  color: #2563eb;
+}
+.bubble-ai .tip {
+  margin-top: 0.6rem;
+  padding: 8px 10px;
+  background: #eff6ff;
+  border-left: 3px solid #2563eb;
+  border-radius: 0 8px 8px 0;
+  font-size: 0.8125rem;
+  color: #1d4ed8;
+}
+
+/* Fade-in animation for new messages */
+@keyframes fadeSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.msg-row {
+  animation: fadeSlideUp 0.2s ease forwards;
+}
+
+/* ----- Typing indicator dots ----- */
+.typing-dot {
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  background-color: #93c5fd;
+  border-radius: 50%;
+  margin: 0 2px;
+  animation: typingBounce 1.2s infinite ease-in-out;
+}
+.typing-dot:nth-child(1) { animation-delay: 0s; }
+.typing-dot:nth-child(2) { animation-delay: 0.2s; }
+.typing-dot:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes typingBounce {
+  0%, 60%, 100% { transform: translateY(0); }
+  30%           { transform: translateY(-5px); }
+}
+
+/* ----- Quick action buttons ----- */
+.qa-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 12px;
+  border-radius: 10px;
+  border: 1px solid #e5e7eb;
+  background: #f9fafb;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: #374151;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s, color 0.15s, transform 0.1s;
+  text-align: left;
+}
+.qa-btn:hover {
+  background: #eff6ff;
+  border-color: #93c5fd;
+  color: #1d4ed8;
+}
+.qa-btn:active {
+  transform: scale(0.97);
+}
+.qa-btn .qa-icon {
+  width: 28px;
+  height: 28px;
+  border-radius: 7px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+/* ----- Keyboard hint badge ----- */
+kbd.kbd {
+  display: inline-block;
+  padding: 1px 5px;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+  background: #f3f4f6;
+  font-family: inherit;
+  font-size: 0.7rem;
+  color: #6b7280;
+  line-height: 1.4;
+}
+
+/* ----- Timestamp label ----- */
+.msg-time {
+  font-size: 0.7rem;
+  color: #9ca3af;
+  margin-top: 3px;
+}
+
+/* ----- Escalation modal ----- */
+#escalate-modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.35);
+}
+#escalate-modal.visible {
+  display: flex;
+}
+#escalate-modal .modal-card {
+  background: #fff;
+  border-radius: 16px;
+  padding: 28px 28px 24px;
+  max-width: 380px;
+  width: 90%;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.18);
+  animation: fadeSlideUp 0.2s ease forwards;
+}
+
+/* ----- Textarea auto-resize helper ----- */
+textarea {
+  overflow-y: auto;
+}
+
+/* ============================================================
+   INTERACTIVE FLOW — Step bubbles, confirm bar, banners
+   ============================================================ */
+
+/* ----- Step header inside AI bubble ----- */
+.step-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+/* "Langkah X / Y" badge */
+.step-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 9px;
+  border-radius: 999px;
+  background: #dbeafe;      /* blue-100 */
+  color: #1d4ed8;           /* blue-700 */
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+
+/* Flow title label (e.g. "Reset Password") */
+.step-title {
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: #6b7280;            /* gray-500 */
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* The instruction text block */
+.step-instruction {
+  font-size: 0.875rem;
+  line-height: 1.65;
+  color: #1f2328;
+  margin: 0;
+}
+
+/* ----- Confirmation bar ----- */
+.confirm-bar {
+  /* Indent to align with the AI bubble (avatar width 28px + gap 8px = 36px) */
+  margin-left: 36px;
+  margin-top: -8px;          /* visually attach to the bubble above */
+  margin-bottom: 12px;
+  padding: 10px 14px;
+  background: #f8faff;
+  border: 1px solid #dbeafe;
+  border-top: none;
+  border-radius: 0 0 14px 14px;
+  animation: fadeSlideUp 0.2s ease forwards;
+}
+
+.confirm-question {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #374151;
+  margin: 0 0 8px;
+}
+
+.confirm-buttons {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+/* Base confirm button */
+.btn-confirm {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 7px 16px;
+  border-radius: 9px;
+  border: 1.5px solid transparent;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s, transform 0.1s, opacity 0.15s;
+}
+.btn-confirm:active {
+  transform: scale(0.96);
+}
+
+/* "Sudah berhasil" — green */
+.btn-success {
+  background: #dcfce7;       /* green-100 */
+  border-color: #86efac;     /* green-300 */
+  color: #15803d;            /* green-700 */
+}
+.btn-success:not(:disabled):hover {
+  background: #bbf7d0;       /* green-200 */
+}
+
+/* "Belum berhasil" — red/orange */
+.btn-fail {
+  background: #fee2e2;       /* red-100 */
+  border-color: #fca5a5;     /* red-300 */
+  color: #b91c1c;            /* red-700 */
+}
+.btn-fail:not(:disabled):hover {
+  background: #fecaca;       /* red-200 */
+}
+
+/* Disabled state (after user has clicked) */
+.btn-confirm.btn-disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Answered bar — slightly dim and shrink question text */
+.confirm-bar.answered .confirm-question {
+  color: #9ca3af;
+  font-style: italic;
+}
+
+/* ----- Success banner ----- */
+.success-banner {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 12px;
+  background: #dcfce7;       /* green-100 */
+  border: 1px solid #86efac; /* green-300 */
+  border-radius: 10px;
+  font-size: 0.875rem;
+  color: #15803d;            /* green-700 */
+}
+
+/* ----- Warning banner (all steps exhausted) ----- */
+.warn-banner {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 12px;
+  background: #fef9c3;       /* yellow-100 */
+  border: 1px solid #fde68a; /* yellow-300 */
+  border-radius: 10px;
+  font-size: 0.875rem;
+  color: #92400e;            /* amber-800 */
+}
